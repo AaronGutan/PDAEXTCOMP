@@ -1,0 +1,353 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1251">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 11">
+<meta name=Originator content="Microsoft Word 11">
+<link rel=File-List href="LogComp.files/filelist.xml">
+<title>Описание внешней компоненты LogAddIn.dll</title>
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>130</w:Zoom>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:204;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Обычный;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-font-kerning:16.0pt;}
+h2
+	{mso-style-next:Обычный;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-style:italic;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{mso-style-update:auto;
+	mso-style-noshow:yes;
+	mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{mso-style-update:auto;
+	mso-style-noshow:yes;
+	mso-style-next:Обычный;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:12.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.a, li.a, div.a
+	{mso-style-name:СвойствоМетод;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	font-weight:bold;
+	mso-bidi-font-weight:normal;}
+span.a0
+	{mso-style-name:"Тип Знак";
+	mso-style-locked:yes;
+	mso-style-link:Тип;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Verdana;
+	mso-ascii-font-family:Verdana;
+	mso-hansi-font-family:Verdana;
+	mso-ansi-language:RU;
+	mso-fareast-language:RU;
+	mso-bidi-language:AR-SA;}
+p.a1, li.a1, div.a1
+	{mso-style-name:Тип;
+	mso-style-link:"Тип Знак";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:2.0cm 42.5pt 2.0cm 3.0cm;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Обычная таблица";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="7170"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=RU link=blue vlink=purple style='tab-interval:35.4pt'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:Arial'>Описание внешней
+компоненты </span></b><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='font-size:16.0pt;font-family:Arial;mso-ansi-language:EN-US'>LogAddIn</span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:16.0pt;font-family:
+Arial'>.<span class=SpellE>dll</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><!--[if supportFields]><span
+lang=EN-US style='mso-ansi-language:EN-US'><span style='mso-element:field-begin'></span><span
+style='mso-spacerun:yes'> </span>TOC \o &quot;1-2&quot; \n \h \z \u <span
+style='mso-element:field-separator'></span></span><![endif]--><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc197836972">Общее
+описание</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc197836973">Свойства
+компоненты</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc197836974">Методы
+компоненты</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoNormal><!--[if supportFields]><span lang=EN-US style='mso-ansi-language:
+EN-US'><span style='mso-element:field-end'></span></span><![endif]--><span
+lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<h2><a name="_Toc197836972">Общее описание</a></h2>
+
+<p class=MsoNormal style='text-align:justify'>Внешняя компонента<span
+style='mso-spacerun:yes'>  </span><span lang=EN-US style='mso-ansi-language:
+EN-US'>LogAddIn</span>.<span class=SpellE><span lang=EN-US style='mso-ansi-language:
+EN-US'>dll</span></span><span lang=EN-US> </span>предназначена для работы «1С<span
+class=GramE>:П</span>редприятие 8. Расширение для карманных компьютеров» и выполняет
+вывод необходимой информации в лог-файл. Компонента может быть использована,
+например, в целях отладки мобильных приложений.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Имя объекта для использования в
+мобильных приложениях: <span class=GramE><span lang=EN-US style='mso-ansi-language:
+EN-US'>LogAddIn</span>.</span></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<h2><a name="_Toc197836973">Свойства компоненты</a></h2>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span
+style='font-family:Arial'>Включен (</span></b><span class=SpellE><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-family:Arial;
+mso-ansi-language:EN-US'>IsEnabled</span></b></span><b style='mso-bidi-font-weight:
+normal'><span style='font-family:Arial'>)<o:p></o:p></span></b></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – число. Чтение и запись.</p>
+
+<p class=MsoNormal>0 - выключен, 1 – включен</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Содержит признак того, включен или выключен вывод информации
+в лог-файл.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE>ИмяФайла</span> (<span class=SpellE><span
+lang=EN-US style='mso-ansi-language:EN-US'>FileName</span></span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – Строка. Чтение и запись.</p>
+
+<p class=MsoNormal style='text-align:justify'>Полное имя файла, в который
+выводится информация.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE>ПечататьВремя</span>(<span class=SpellE><span
+lang=EN-US style='mso-ansi-language:EN-US'>PrintTime</span></span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – число. Чтение и запись.</p>
+
+<p class=MsoNormal>0 – не печатать, 1 – печатать</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Если установлено значение 1, то в файл выводится текущее
+время.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<h2><a name="_Toc197836974">Методы компоненты</a></h2>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a>Вывести (<span lang=EN-US style='mso-ansi-language:EN-US'>Output</span>)
+</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Выводит в файл строку, переданную в качестве параметра.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><i style='mso-bidi-font-style:normal'>Параметры:<o:p></o:p></i></p>
+
+<p class=MsoNormal><span class=SpellE>ЗначениеВывода</span> – значение,
+выводимое в файл. Обязательный.</p>
+
+<p class=MsoNormal>Тип значения – Строка. </p>
+
+<p class=a><o:p>&nbsp;</o:p></p>
+
+<p class=a>Удалить (<span lang=EN-US style='mso-ansi-language:EN-US'>Delete</span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Удаляет лог-файл с диска.</p>
+
+<p class=a><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE><span class=GramE>УстановитьИмяФайла</span></span><span
+class=GramE> (<span class=SpellE><span lang=EN-US style='mso-ansi-language:
+EN-US'>SetFileName</span></span></span><span style='font-weight:normal'><o:p></o:p></span></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Устанавливает имя <span class=SpellE><span class=GramE>лог-файла</span></span>.
+</p>
+
+<p class=MsoNormal><i style='mso-bidi-font-style:normal'><o:p>&nbsp;</o:p></i></p>
+
+<p class=MsoNormal><i style='mso-bidi-font-style:normal'>Параметры:<o:p></o:p></i></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span class=SpellE>ИмяФайла</span> – устанавливаемое имя
+файла. Обязательный.</p>
+
+<p class=MsoNormal>Тип значения – Строка.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span class=SpellE>ОчищатьФайл</span> – признак очистки
+файла. Не обязательный. Значение по умолчанию – 0.</p>
+
+<p class=MsoNormal>Тип значения – Число. </p>
+
+<p class=MsoNormal>0 – не очищать, 1 – очищать</p>
+
+</div>
+
+</body>
+
+</html>

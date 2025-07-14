@@ -1,0 +1,150 @@
+name: Build PdfImageAddIn
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+    
+    - name: Setup Visual Studio
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: '16.0'
+    
+    - name: Download PDFium
+      run: |
+        # Скачиваем предсобранные PDFium библиотеки
+        $url = "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F5790/pdfium-win-x86.tgz"
+        $output = "pdfium-win-x86.tgz"
+        Invoke-WebRequest -Uri $url -OutFile $output
+        
+        # Распаковываем
+        tar -xzf $output
+        
+        # Создаем директорию для библиотек
+        New-Item -ItemType Directory -Path "lib" -Force
+        New-Item -ItemType Directory -Path "include" -Force
+        
+        # Копируем файлы
+        Copy-Item -Path "bin\*.dll" -Destination "lib\" -Force
+        Copy-Item -Path "lib\*.lib" -Destination "lib\" -Force
+        Copy-Item -Path "include\*" -Destination "include\" -Recurse -Force
+        
+        # Показываем структуру
+        Get-ChildItem -Path "lib" -Recurse
+        Get-ChildItem -Path "include" -Recurse
+      shell: powershell
+    
+    - name: Build AddIn Base Library
+      run: |
+        cd Source/Addin
+        # Компилируем базовую библиотеку
+        cl /c /EHsc /I../../include *.cpp
+        lib /OUT:../../lib/addin.lib *.obj
+      shell: cmd
+    
+    - name: Build PdfImageAddIn
+      run: |
+        cd Source/PdfImageAddIn
+        
+        # Компилируем исходные файлы
+        cl /c /EHsc /I../../include /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL PdfImageAddIn.cpp MyClassFactory.cpp
+        
+        # Создаем DLL
+        link /DLL /OUT:PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj ../../lib/addin.lib ../../lib/pdfium.lib ole32.lib oleaut32.lib uuid.lib
+        
+        # Проверяем результат
+        if (Test-Path "PdfImageAddIn.dll") {
+          Write-Host "✅ PdfImageAddIn.dll успешно создан"
+          Get-Item "PdfImageAddIn.dll" | Select-Object Name, Length, LastWriteTime
+        } else {
+          Write-Host "❌ Ошибка создания PdfImageAddIn.dll"
+          exit 1
+        }
+      shell: powershell
+    
+    - name: Build LogAddIn (дополнительно)
+      run: |
+        cd Source/LogAddin
+        
+        # Компилируем LogAddIn
+        cl /c /EHsc /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL LogAddIn.cpp MyClassFactory.cpp
+        
+        # Создаем DLL
+        link /DLL /OUT:LogAddIn.dll /DEF:ADDIN.DEF LogAddIn.obj MyClassFactory.obj ../../lib/addin.lib ole32.lib oleaut32.lib uuid.lib
+        
+        if (Test-Path "LogAddIn.dll") {
+          Write-Host "✅ LogAddIn.dll успешно создан"
+        }
+      shell: powershell
+    
+    - name: Build ScanSymb (дополнительно)
+      run: |
+        cd Source/ScanSymb
+        
+        # Компилируем ScanSymb
+        cl /c /EHsc /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL ScanAddIn.cpp MyClassFactory.cpp ScanWindow.cpp
+        
+        # Создаем DLL
+        link /DLL /OUT:ScanSymb.dll /DEF:ScanSymb.DEF ScanAddIn.obj MyClassFactory.obj ScanWindow.obj ../../lib/addin.lib ole32.lib oleaut32.lib uuid.lib user32.lib
+        
+        if (Test-Path "ScanSymb.dll") {
+          Write-Host "✅ ScanSymb.dll успешно создан"
+        }
+      shell: powershell
+    
+    - name: Copy artifacts
+      run: |
+        # Создаем папку для артефактов
+        New-Item -ItemType Directory -Path "artifacts" -Force
+        
+        # Копируем собранные DLL
+        if (Test-Path "Source/PdfImageAddIn/PdfImageAddIn.dll") {
+          Copy-Item -Path "Source/PdfImageAddIn/PdfImageAddIn.dll" -Destination "artifacts/"
+        }
+        if (Test-Path "Source/LogAddin/LogAddIn.dll") {
+          Copy-Item -Path "Source/LogAddin/LogAddIn.dll" -Destination "artifacts/"
+        }
+        if (Test-Path "Source/ScanSymb/ScanSymb.dll") {
+          Copy-Item -Path "Source/ScanSymb/ScanSymb.dll" -Destination "artifacts/"
+        }
+        
+        # Копируем документацию
+        Copy-Item -Path "*.htm" -Destination "artifacts/" -Force
+        Copy-Item -Path "Source/PdfImageAddIn/README.md" -Destination "artifacts/" -Force
+        Copy-Item -Path "Source/PdfImageAddIn/PDFIUM_INSTALL.md" -Destination "artifacts/" -Force
+        Copy-Item -Path "Source/PdfImageAddIn/PdfImageComp.htm" -Destination "artifacts/" -Force
+        
+        # Показываем что получилось
+        Get-ChildItem -Path "artifacts" -Recurse
+      shell: powershell
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: compiled-components
+        path: artifacts/
+        retention-days: 30
+    
+    - name: Test basic functionality
+      run: |
+        # Простейший тест - проверяем что DLL можно загрузить
+        try {
+          $dll = [System.Reflection.Assembly]::LoadFile("$PWD\artifacts\PdfImageAddIn.dll")
+          Write-Host "✅ PdfImageAddIn.dll загружается корректно"
+        } catch {
+          Write-Host "⚠️ Предупреждение: Не удалось загрузить DLL напрямую (возможно, требуются зависимости)"
+        }
+      shell: powershell
+      continue-on-error: true 

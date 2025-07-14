@@ -1,0 +1,458 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1251">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 11">
+<meta name=Originator content="Microsoft Word 11">
+<link rel=File-List href="ScanSymb.files/filelist.xml">
+<title>Описание внешней компоненты ScanSymb.dll</title>
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>130</w:Zoom>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:204;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Обычный;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-font-kerning:16.0pt;}
+h2
+	{mso-style-next:Обычный;
+	margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-style:italic;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{mso-style-update:auto;
+	mso-style-noshow:yes;
+	mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{mso-style-update:auto;
+	mso-style-noshow:yes;
+	mso-style-next:Обычный;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:12.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.a, li.a, div.a
+	{mso-style-name:СвойствоМетод;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	font-weight:bold;
+	mso-bidi-font-weight:normal;}
+span.a0
+	{mso-style-name:"Тип Знак";
+	mso-style-locked:yes;
+	mso-style-link:Тип;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Verdana;
+	mso-ascii-font-family:Verdana;
+	mso-hansi-font-family:Verdana;
+	mso-ansi-language:RU;
+	mso-fareast-language:RU;
+	mso-bidi-language:AR-SA;}
+p.a1, li.a1, div.a1
+	{mso-style-name:Тип;
+	mso-style-link:"Тип Знак";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:2.0cm 42.5pt 2.0cm 3.0cm;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Обычная таблица";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="5122"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=RU link=blue vlink=purple style='tab-interval:35.4pt'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:Arial'>Описание внешней
+компоненты ScanSymb.dll<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><!--[if supportFields]><span
+lang=EN-US style='mso-ansi-language:EN-US'><span style='mso-element:field-begin'></span><span
+style='mso-spacerun:yes'> </span>TOC \o &quot;1-2&quot; \n \h \z \u <span
+style='mso-element:field-separator'></span></span><![endif]--><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc154681594">Общее
+описание</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc154681595">Свойства
+компоненты</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc154681596">Методы
+компоненты</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:right dotted 467.25pt'><span
+class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc154681597">Значения
+параметров внешнего события</a></span></span><span style='mso-no-proof:yes'><o:p></o:p></span></p>
+
+<p class=MsoNormal><!--[if supportFields]><span lang=EN-US style='mso-ansi-language:
+EN-US'><span style='mso-element:field-end'></span></span><![endif]--><span
+lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<h2><a name="_Toc154681594">Общее описание</a></h2>
+
+<p class=MsoNormal style='text-align:justify'>Внешняя компонента<span
+style='mso-spacerun:yes'>  </span><span class=SpellE><span lang=EN-US
+style='mso-ansi-language:EN-US'>ScanSymb</span></span>.<span class=SpellE><span
+lang=EN-US style='mso-ansi-language:EN-US'>dll</span></span><span lang=EN-US> </span>предназначена
+для работы «1С<span class=GramE>:П</span>редприятие 8. Расширение для карманных
+компьютеров» на мобильных устройствах «<span lang=EN-US style='mso-ansi-language:
+EN-US'>Symbol</span>», оборудованных встроенным сканером <span class=SpellE>штрих-кодов</span>
+Данная компонента обеспечивает взаимодействие со сканером <span class=SpellE>штрих-кодов</span>.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Компонента удовлетворяет
+требованиям технологии «1С<span class=GramE>:П</span>редприятие 8. Расширение
+для карманных компьютеров». Поэтому данная компонента может использоваться в
+мобильных приложениях, создаваемых при помощи «1С<span class=GramE>:П</span>редприятие
+8. Расширение для карманных компьютеров», для организации работы со сканером <span
+class=SpellE>штрих-кодов</span>. </p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>После загрузки компонента
+занимает сканер (делает его недоступным для других программ). Для начала
+сканирования нужно подсоединить сканер путем вызова метода<span class=GramE> П</span>одсоединить.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Имя объекта для использования в
+мобильных приложениях: <span class=SpellE>ScanSymb</span>.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<h2><a name="_Toc154681595">Свойства компоненты</a></h2>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span class=SpellE><b style='mso-bidi-font-weight:normal'><span
+style='font-family:Arial'>УстройствоВключено</span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='font-family:Arial'> (</span></b><span
+class=SpellE><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='font-family:Arial;mso-ansi-language:EN-US'>DeviceIsEnabled</span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='font-family:Arial'>)<o:p></o:p></span></b></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – число. Только чтение.</p>
+
+<p class=MsoNormal>0 - выключено, 1 – включено</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Содержит признак того, включено устройство или выключено.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a>Результат (<span lang=EN-US style='mso-ansi-language:EN-US'>Result</span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – число. Только чтение.</p>
+
+<p class=MsoNormal style='text-align:justify'>В случае отсутствия ошибок при
+последнем вызове метода компоненты содержит 0, в противном случае содержит код
+ошибки.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE>ВремяОжидания</span>(<span lang=EN-US
+style='mso-ansi-language:EN-US'>Timeout</span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – число. Чтение и запись.</p>
+
+<p class=MsoNormal>Содержит время ожидания, задаваемое в миллисекундах.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span class=GramE>Предназначен</span> для установки времени
+ожидания результатов сканирования от устройства</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE>ПосылкаДанных</span> (<span class=SpellE>DataSend</span>)
+</p>
+
+<p class=a><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Тип значения – число. Чтение и запись.</p>
+
+<p class=MsoNormal>0 – не посылать данные, 1 – посылать данные.</p>
+
+<p class=MsoNormal style='text-align:justify'>Если установлено значение 0, то
+данные, получаемые от сканера, буферизуются внешней компонентой.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Свойство предназначено для
+управления буферизацией данных, получаемых от сканера. Если данные в данный
+момент не могут быть обработаны, то они могут накапливаться в буфере внешней
+компоненты.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>При удачном сканировании,
+вызывается внешнее событие, автоматически устанавливая значение свойства «<span
+class=SpellE>ПосылкаДанных</span>» равным 0. <span class=GramE>После этого все
+сообщения будут накапливаться в буфере внешней компоненты сканера, пока либо
+она не будет очищена посредством вызова метода <span class=SpellE>ОчиститьВыход</span>),
+либо значение свойства «<span class=SpellE>ПосылкаДанных</span>» не будет
+установлено равным 1.</span> Если при установке значения свойства «<span
+class=SpellE>ПосылкаДанных</span>» равным 1 очередь не пуста, вызывается
+внешнее событие для первого сообщения в очереди и значение свойства «<span
+class=SpellE>ПосылкаДанных</span>» устанавливается равным 0. Если очередь
+пуста, то первое же сообщение вызовет внешнее событие и значение свойства «<span
+class=SpellE>ПосылкаДанных</span>» будет установлено равным 0.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE>УстройствоЗанято</span> (<span lang=EN-US
+style='mso-ansi-language:EN-US'>Busy</span>)</p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>            </span></p>
+
+<p class=MsoNormal>Тип значения – число. Только чтение.</p>
+
+<p class=MsoNormal>0 – устройство свободно, 1 – занято.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Предназначено для определения занятости устройства.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<h2><a name="_Toc154681596">Методы компоненты</a></h2>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a>Подсоединить (<span lang=EN-US style='mso-ansi-language:EN-US'>Connect</span>)
+</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Осуществляет подключение к сканеру.</p>
+
+<p class=a><o:p>&nbsp;</o:p></p>
+
+<p class=a>Отсоединить (<span class=SpellE><span lang=EN-US style='mso-ansi-language:
+EN-US'>BreakConnection</span></span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Выполняет отключение объекта компоненты от сканера. После
+выполнения метода сканирование невозможно.</p>
+
+<p class=a><o:p>&nbsp;</o:p></p>
+
+<p class=a><span class=SpellE>ОчиститьВыход</span> (<span class=SpellE><span
+lang=EN-US style='mso-ansi-language:EN-US'>CleanOutput</span></span>)</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Очищает очередь буфера компоненты. </p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<h2><a name="_Toc154681597">Значения параметров внешнего события</a></h2>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Для параметров внешнего события,
+генерируемого компонентой для мобильного приложения, устанавливаются следующие
+значения:</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a>Параметр «Источник»</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Параметр имеет значение «<span
+class=SpellE>Symbol</span> <span class=SpellE><span lang=EN-US
+style='mso-ansi-language:EN-US'>Scaner</span></span>». </p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a>Параметр «Событие»</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Может принимать одно из следующих
+значений:</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>«<span class=SpellE>BarCodeValue</span>»
+- если параметр <b style='mso-bidi-font-weight:normal'>«Данные»</b> содержит
+штрих-код, считанный сканером.</p>
+
+<p class=MsoNormal style='text-align:justify'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>«<span lang=EN-US
+style='mso-ansi-language:EN-US'>Status</span>» - если параметр <b
+style='mso-bidi-font-weight:normal'>«Данные»</b> содержит те<span class=GramE>кст
+сл</span>ужебного сообщения (как правило, это сообщение об ошибке). </p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>            </span></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=a>Параметр «Данные»</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='text-align:justify'>Содержит штрих-код, считанный
+сканером. Также может содержать текст служебного сообщения<span
+style='mso-spacerun:yes'>  </span>(<span class=GramE>см</span>. описание
+параметра <b style='mso-bidi-font-weight:normal'>Событие</b>).</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+</div>
+
+</body>
+
+</html>

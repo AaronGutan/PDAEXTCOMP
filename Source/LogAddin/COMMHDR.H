@@ -1,0 +1,2 @@
+#include <atlbase.h>
+
