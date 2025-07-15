@@ -46,7 +46,7 @@ echo Сборка базовой библиотеки AddIn...
 echo ========================================
 
 cd Source\Addin
-cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I. *.cpp
+cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I. /I../../include *.cpp
 if errorlevel 1 (
     echo Ошибка компиляции базовой библиотеки!
     pause
@@ -70,14 +70,14 @@ echo Сборка PdfImageAddIn...
 echo ========================================
 
 cd Source\PdfImageAddIn
-cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I..\..\include /I..\Addin /I. PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp
+cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I. /I..\..\include /I..\Addin PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp
 if errorlevel 1 (
     echo Ошибка компиляции PdfImageAddIn!
     pause
     exit /b 1
 )
 
-link /DLL /OUT:..\..\bin\PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj PdfDragDropWindow.obj ..\..\lib\addin.lib ..\..\lib\pdfium.lib ole32.lib oleaut32.lib uuid.lib
+link /DLL /OUT:..\..\bin\PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj PdfDragDropWindow.obj ..\..\lib\addin.lib ..\..\lib\pdfium.lib ole32.lib oleaut32.lib uuid.lib user32.lib gdi32.lib
 if errorlevel 1 (
     echo Ошибка линковки PdfImageAddIn!
     pause

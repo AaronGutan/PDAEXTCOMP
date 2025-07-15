@@ -11,10 +11,10 @@ ADDIN_PATH = Source/Addin
 PDFIMAGE_PATH = Source/PdfImageAddIn
 
 # Флаги компилятора
-CFLAGS = /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I$(ADDIN_PATH) /Iinclude
+CFLAGS = /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I. /I$(ADDIN_PATH) /Iinclude
 
 # Библиотеки
-LIBS = ole32.lib oleaut32.lib uuid.lib user32.lib
+LIBS = ole32.lib oleaut32.lib uuid.lib user32.lib gdi32.lib
 PDFIUM_LIBS = lib/pdfium.lib
 
 # Цели
@@ -29,14 +29,14 @@ setup:
 # Базовая библиотека AddIn
 base_lib:
 	@echo Сборка базовой библиотеки AddIn...
-	cd $(ADDIN_PATH) && $(CC) $(CFLAGS) *.cpp
+	cd $(ADDIN_PATH) && $(CC) /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I. /I../../include *.cpp
 	cd $(ADDIN_PATH) && $(LIB) /OUT:../../lib/addin.lib *.obj
 	@echo Базовая библиотека создана
 
 # PdfImageAddIn
 pdf_addin: base_lib
 	@echo Сборка PdfImageAddIn...
-	cd $(PDFIMAGE_PATH) && $(CC) $(CFLAGS) /I../../include PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp
+	cd $(PDFIMAGE_PATH) && $(CC) /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I. /I../../include /I../Addin PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp
 	cd $(PDFIMAGE_PATH) && $(LINK) /DLL /OUT:../../bin/PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj PdfDragDropWindow.obj ../../lib/addin.lib $(PDFIUM_LIBS) $(LIBS)
 	@echo PdfImageAddIn.dll создан
 
