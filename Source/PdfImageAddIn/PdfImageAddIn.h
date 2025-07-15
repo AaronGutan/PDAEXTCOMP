@@ -23,7 +23,7 @@ struct PdfImageInfo {
     double x, y;
     double width, height;
     long pageNum;
-    _TCHAR imagePath[_MAX_PATH];
+    TCHAR imagePath[_MAX_PATH];
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -82,9 +82,9 @@ public:
 
 private:
     // Внутренние переменные
-    _TCHAR m_PdfFileName[_MAX_PATH];
-    _TCHAR m_ImageFileName[_MAX_PATH];
-    _TCHAR m_LastError[512];
+    TCHAR m_PdfFileName[_MAX_PATH];
+    TCHAR m_ImageFileName[_MAX_PATH];
+    TCHAR m_LastError[512];
     
     double m_ImageX;
     double m_ImageY;
@@ -106,18 +106,19 @@ private:
     void FinalizePdfium();
     
     // Внутренние методы
-    BOOL LoadPdfFile(const _TCHAR* filename);
-    BOOL AddImageToPdf(const _TCHAR* imageFile, double x, double y, double width, double height, long pageNum);
-    BOOL SavePdfFile(const _TCHAR* filename);
+    BOOL LoadPdfFile(const TCHAR* filename);
+    BOOL AddImageToPdf(const TCHAR* imageFile, double x, double y, double width, double height, long pageNum);
+    BOOL SavePdfFile(const TCHAR* filename);
+public:
     BOOL GetPageDimensions(long pageNum, double* width, double* height);
     BOOL ClearAllImages();
     long GetTotalPageCount();
     
-    void SetLastError(const _TCHAR* error);
+    void SetLastError(const TCHAR* error);
     void ClearLastError();
     
     // Вспомогательные методы для работы с PDFium
-    BOOL LoadImageFile(const _TCHAR* imagePath, void** imageData, size_t* imageSize);
+    BOOL LoadImageFile(const TCHAR* imagePath, void** imageData, size_t* imageSize);
     BOOL AddImageToPage(FPDF_PAGE page, const void* imageData, size_t imageSize, 
                        double x, double y, double width, double height);
     

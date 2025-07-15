@@ -213,14 +213,11 @@ LRESULT PdfDragDropWindow::HandleMessage(UINT message, WPARAM wParam, LPARAM lPa
     case WM_DROPFILES:
         return OnDropFiles(wParam);
         
-    case WM_DRAGENTER:
-        return OnDragEnter(wParam, lParam);
+            case WM_DROPFILES:
+            return OnDropFiles(wParam);
         
-    case WM_DRAGOVER:
-        return OnDragOver(wParam, lParam);
-        
-    case WM_DRAGLEAVE:
-        return OnDragLeave();
+        case WM_MOUSEMOVE:
+            return OnMouseMove(wParam, lParam);
         
     case WM_MOUSEMOVE:
         return OnMouseMove(wParam, lParam);
@@ -677,13 +674,13 @@ LRESULT PdfDragDropWindow::OnKeyDown(WPARAM wParam, LPARAM lParam)
         SetCurrentPage(m_totalPages);
         break;
         
-    case VK_PLUS:
+    case 0xBB: // VK_PLUS
     case VK_ADD:
         // Увеличить масштаб
         SetZoomLevel(m_zoomLevel * 1.1);
         break;
         
-    case VK_MINUS:
+    case 0xBD: // VK_MINUS
     case VK_SUBTRACT:
         // Уменьшить масштаб
         SetZoomLevel(m_zoomLevel / 1.1);
@@ -948,7 +945,7 @@ BOOL GetImageDimensions(const TCHAR* imagePath, int* width, int* height)
         gdiplusInitialized = TRUE;
     }
     
-    Image* image = new Image(imagePath);
+    Image* image = new Image((const WCHAR*)imagePath);
     if (image && image->GetLastStatus() == Ok) {
         *width = image->GetWidth();
         *height = image->GetHeight();
