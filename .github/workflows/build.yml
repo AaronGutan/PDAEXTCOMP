@@ -24,7 +24,7 @@ jobs:
     
     - name: Download PDFium
       run: |
-        # Скачиваем предсобранные PDFium библиотеки с retry логикой
+        # Download prebuilt PDFium libraries with retry logic
         $url = "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F7295/pdfium-win-x86.tgz"
         $output = "pdfium-win-x86.tgz"
         $maxAttempts = 3
@@ -134,26 +134,73 @@ jobs:
     
     - name: Build AddIn Base Library
       run: |
-        cd Source/Addin
-        # Compile base library
-        cl /c /EHsc /I../../include *.cpp
-        lib /OUT:../../lib/addin.lib *.obj
-      shell: cmd
+        # Initialize Visual Studio environment
+        $vsPaths = @(
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars32.bat"
+        )
+        
+        $vsPath = $null
+        foreach ($path in $vsPaths) {
+            if (Test-Path $path) {
+                $vsPath = $path
+                Write-Host "Found Visual Studio at: $vsPath"
+                break
+            }
+        }
+        
+        if (-not $vsPath) {
+            throw "Visual Studio not found!"
+        }
+        
+        # Build base library
+        cmd /c "`"$vsPath`" && cd Source\Addin && cl /c /EHsc /I../../include *.cpp && lib /OUT:../../lib/addin.lib *.obj"
+      shell: powershell
     
     - name: Build PdfImageAddIn
       run: |
-        cd Source/PdfImageAddIn
+        # Initialize Visual Studio environment
+        $vsPaths = @(
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars32.bat",
+            "${env:ProgramFiles}\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars32.bat"
+        )
         
-        # Compile source files
-        cl /c /EHsc /I../../include /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp
+        $vsPath = $null
+        foreach ($path in $vsPaths) {
+            if (Test-Path $path) {
+                $vsPath = $path
+                Write-Host "Found Visual Studio at: $vsPath"
+                break
+            }
+        }
         
-        # Create DLL
-        link /DLL /OUT:PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj PdfDragDropWindow.obj ../../lib/addin.lib ../../lib/pdfium.lib ole32.lib oleaut32.lib uuid.lib
+        if (-not $vsPath) {
+            throw "Visual Studio not found!"
+        }
+        
+        # Build PdfImageAddIn
+        $buildCmd = "`"$vsPath`" && cd Source\PdfImageAddIn && " +
+                   "cl /c /EHsc /I../../include /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp && " +
+                   "link /DLL /OUT:PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj PdfDragDropWindow.obj ../../lib/addin.lib ../../lib/pdfium.lib ole32.lib oleaut32.lib uuid.lib"
+        
+        cmd /c $buildCmd
         
         # Check result
-        if (Test-Path "PdfImageAddIn.dll") {
+        if (Test-Path "Source/PdfImageAddIn/PdfImageAddIn.dll") {
           Write-Host "PdfImageAddIn.dll created successfully"
-          Get-Item "PdfImageAddIn.dll" | Select-Object Name, Length, LastWriteTime
+          Get-Item "Source/PdfImageAddIn/PdfImageAddIn.dll" | Select-Object Name, Length, LastWriteTime
         } else {
           Write-Host "Error creating PdfImageAddIn.dll"
           exit 1
