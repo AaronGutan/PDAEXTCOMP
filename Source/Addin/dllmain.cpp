@@ -174,14 +174,16 @@ STDAPI DllRegisterServer()
     if (SUCCEEDED(hr)) {
       _TCHAR  key[255];
       if (i ==0) {
-        _stprintf (key, _T("%s"), str);
+        USES_CONVERSION;
+        _stprintf (key, _T("%s"), OLE2T(str));
         RegSetValueEx(hkeyCLSID1,_T(""),0, REG_SZ, (BYTE *)key, (_tcslen(key)+1)*sizeof(_TCHAR));
         RegSetValueEx(hkeyCLSID2,_T(""),0, REG_SZ, (BYTE *)key, (_tcslen(key)+1)*sizeof(_TCHAR));
       }
       //Str temp= WStr(str).Get();
       HKEY hKeyClass;
       HKEY hKey;
-      hr = RegCreateKeyEx(hkeyCLSID,str, 0, _T(""), 0, KEY_READ | KEY_WRITE, 0, &hKeyClass, 0);
+      USES_CONVERSION;
+      hr = RegCreateKeyEx(hkeyCLSID,OLE2T(str), 0, _T(""), 0, KEY_READ | KEY_WRITE, 0, &hKeyClass, 0);
       hr = RegCreateKeyEx(hKeyClass,_T("InprocServer32"), 0, _T(""), 0, KEY_READ | KEY_WRITE, 0, &hKey, 0);
       RegSetValueEx(hKey,_T(""),0, REG_SZ,(BYTE *)filename,(_tcslen(filename)+1)*sizeof(_TCHAR));
       _TCHAR both[] = _T("both");

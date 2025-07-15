@@ -2,6 +2,8 @@
 #pragma hdrstop
 #include <windows.h>
 #include <stdio.h>
+#include <direct.h>
+#include <io.h>
 #include "log.h"
 
 typedef unsigned char uchar;
@@ -125,11 +127,11 @@ void _Event(const _TCHAR *filename, SYSTEMTIME * t, const _TCHAR * str, bool bPr
     _TCHAR str1[20];
     // "00:00:00.00  "
     _stprintf(str1, _T("%02d:%02d:%02d.%02d  "), t->wHour, t->wMinute, t->wSecond, t->wMilliseconds/10);
-    fputws(str1, fp);
+    _fputts(str1, fp);
   }
 
-  fputws(str, fp);
-  fputws(eos, fp);
+  _fputts(str, fp);
+  _fputts(eos, fp);
 
   fclose(fp);
 }

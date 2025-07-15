@@ -394,7 +394,7 @@ HRESULT  DAddIn::RegisterExtensionAs(BSTR *bstrExtensionName)
     _TCHAR csExtenderName[300];
     LoadString(g_hinst, 100, csExtenderName, 300);
     //const _TCHAR *cp = csExtenderName;
-    *bstrExtensionName = SysAllocString(csExtenderName);
+    *bstrExtensionName = SysAllocString(T2OLE(csExtenderName));
     LOG(Log(_T("Extension registered as %s"), csExtenderName));
 
     return NULL;
@@ -411,6 +411,7 @@ HRESULT  DAddIn::FindProp(BSTR bstrPropName,long *plPropNum)
 {
     *plPropNum = -1;
     _TCHAR csPropName[200];
+    USES_CONVERSION;
     _tcscpy(csPropName, OLE2T(bstrPropName));
     _TCHAR propname[300];
     for (unsigned int i = 0; i < m_nProps; i++) {
@@ -443,7 +444,8 @@ HRESULT  DAddIn::GetPropName(long lPropNum,long lPropAlias,BSTR *pbstrPropName)
   }
   if (!bFound)
       return S_FALSE;
-  *pbstrPropName = SysAllocString(csPropName);
+  USES_CONVERSION;
+  *pbstrPropName = SysAllocString(T2OLE(csPropName));
   return S_OK;
 }
 
@@ -509,7 +511,8 @@ HRESULT  DAddIn::GetMethodName(long lMethodNum,long lMethodAlias,BSTR *pbstrMeth
   }
   if (!bFound)
       return S_FALSE;
-  *pbstrMethodName = SysAllocString(csMethodName);
+  USES_CONVERSION;
+  *pbstrMethodName = SysAllocString(T2OLE(csMethodName));
 
   return S_OK;
 }

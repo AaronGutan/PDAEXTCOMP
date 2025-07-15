@@ -2,6 +2,7 @@
 #define _COMMHDR_H
 
 #include <atlbase.h>
+#include <atlconv.h>
 #include <windows.h>
 #include <tchar.h>
 #include <oleauto.h>
