@@ -1,4 +1,4 @@
-name: Build PdfImageAddIn
+name: Build PdfImageAddIn Component
 
 on:
   push:
@@ -95,14 +95,35 @@ jobs:
         
         # Copy files
         Write-Host "Copying files..."
+        
+        # Check actual structure first
+        Write-Host "Checking extracted structure:"
+        Get-ChildItem -Path "." -Recurse | Where-Object { $_.Name -match "\.(dll|lib|h)$" } | ForEach-Object { Write-Host "  $($_.FullName)" }
+        
+        # Copy DLL files if they exist
         if (Test-Path "bin") {
-            Copy-Item -Path "bin\*.dll" -Destination "lib\" -Force
+            Write-Host "Copying DLL files from bin..."
+            Copy-Item -Path "bin\*.dll" -Destination "lib\" -Force -ErrorAction SilentlyContinue
         }
-        if (Test-Path "lib") {
-            Copy-Item -Path "lib\*.lib" -Destination "lib\" -Force
+        
+        # Copy LIB files - avoid self-copy
+        $libFiles = Get-ChildItem -Path "." -Recurse -Filter "*.lib" | Where-Object { $_.DirectoryName -ne (Resolve-Path "lib").Path }
+        if ($libFiles) {
+            Write-Host "Copying LIB files..."
+            foreach ($file in $libFiles) {
+                Copy-Item -Path $file.FullName -Destination "lib\" -Force
+                Write-Host "  Copied: $($file.Name)"
+            }
         }
-        if (Test-Path "include") {
-            Copy-Item -Path "include\*" -Destination "include\" -Recurse -Force
+        
+        # Copy header files - avoid self-copy
+        $headerDirs = Get-ChildItem -Path "." -Directory -Recurse | Where-Object { $_.Name -eq "include" -and $_.FullName -ne (Resolve-Path "include").Path }
+        if ($headerDirs) {
+            Write-Host "Copying header files..."
+            foreach ($dir in $headerDirs) {
+                Copy-Item -Path "$($dir.FullName)\*" -Destination "include\" -Recurse -Force
+                Write-Host "  Copied headers from: $($dir.FullName)"
+            }
         }
         
         # Show structure
@@ -139,35 +160,7 @@ jobs:
         }
       shell: powershell
     
-    - name: Build LogAddIn (additional)
-      run: |
-        cd Source/LogAddin
-        
-        # Compile LogAddIn
-        cl /c /EHsc /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL LogAddIn.cpp MyClassFactory.cpp
-        
-        # Create DLL
-        link /DLL /OUT:LogAddIn.dll /DEF:ADDIN.DEF LogAddIn.obj MyClassFactory.obj ../../lib/addin.lib ole32.lib oleaut32.lib uuid.lib
-        
-        if (Test-Path "LogAddIn.dll") {
-          Write-Host "LogAddIn.dll created successfully"
-        }
-      shell: powershell
-    
-    - name: Build ScanSymb (additional)
-      run: |
-        cd Source/ScanSymb
-        
-        # Compile ScanSymb
-        cl /c /EHsc /I../Addin /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL ScanAddIn.cpp MyClassFactory.cpp ScanWindow.cpp
-        
-        # Create DLL
-        link /DLL /OUT:ScanSymb.dll /DEF:ScanSymb.DEF ScanAddIn.obj MyClassFactory.obj ScanWindow.obj ../../lib/addin.lib ole32.lib oleaut32.lib uuid.lib user32.lib
-        
-        if (Test-Path "ScanSymb.dll") {
-          Write-Host "ScanSymb.dll created successfully"
-        }
-      shell: powershell
+
     
     - name: Copy artifacts
       run: |
@@ -177,12 +170,10 @@ jobs:
         # Copy built DLL files
         if (Test-Path "Source/PdfImageAddIn/PdfImageAddIn.dll") {
           Copy-Item -Path "Source/PdfImageAddIn/PdfImageAddIn.dll" -Destination "artifacts/"
-        }
-        if (Test-Path "Source/LogAddin/LogAddIn.dll") {
-          Copy-Item -Path "Source/LogAddin/LogAddIn.dll" -Destination "artifacts/"
-        }
-        if (Test-Path "Source/ScanSymb/ScanSymb.dll") {
-          Copy-Item -Path "Source/ScanSymb/ScanSymb.dll" -Destination "artifacts/"
+          Write-Host "PdfImageAddIn.dll copied to artifacts"
+        } else {
+          Write-Host "Error: PdfImageAddIn.dll not found!"
+          exit 1
         }
                   
           # Copy documentation

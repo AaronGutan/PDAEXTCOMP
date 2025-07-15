@@ -87,54 +87,6 @@ if errorlevel 1 (
 echo PdfImageAddIn.dll создан
 cd ..\..
 
-:: Сборка LogAddIn
-echo.
-echo ========================================
-echo Сборка LogAddIn...
-echo ========================================
-
-cd Source\LogAddin
-cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I..\Addin /I. LogAddIn.cpp MyClassFactory.cpp
-if errorlevel 1 (
-    echo Ошибка компиляции LogAddIn!
-    pause
-    exit /b 1
-)
-
-link /DLL /OUT:..\..\bin\LogAddIn.dll /DEF:ADDIN.DEF LogAddIn.obj MyClassFactory.obj ..\..\lib\addin.lib ole32.lib oleaut32.lib uuid.lib
-if errorlevel 1 (
-    echo Ошибка линковки LogAddIn!
-    pause
-    exit /b 1
-)
-
-echo LogAddIn.dll создан
-cd ..\..
-
-:: Сборка ScanSymb
-echo.
-echo ========================================
-echo Сборка ScanSymb...
-echo ========================================
-
-cd Source\ScanSymb
-cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I..\Addin /I. ScanAddIn.cpp MyClassFactory.cpp ScanWindow.cpp
-if errorlevel 1 (
-    echo Ошибка компиляции ScanSymb!
-    pause
-    exit /b 1
-)
-
-link /DLL /OUT:..\..\bin\ScanSymb.dll /DEF:ScanSymb.DEF ScanAddIn.obj MyClassFactory.obj ScanWindow.obj ..\..\lib\addin.lib ole32.lib oleaut32.lib uuid.lib user32.lib
-if errorlevel 1 (
-    echo Ошибка линковки ScanSymb!
-    pause
-    exit /b 1
-)
-
-echo ScanSymb.dll создан
-cd ..\..
-
 :: Проверка результатов
 echo.
 echo ========================================
@@ -145,18 +97,6 @@ if exist "bin\PdfImageAddIn.dll" (
     echo ✅ PdfImageAddIn.dll успешно создан
 ) else (
     echo ❌ PdfImageAddIn.dll не найден
-)
-
-if exist "bin\LogAddIn.dll" (
-    echo ✅ LogAddIn.dll успешно создан
-) else (
-    echo ❌ LogAddIn.dll не найден
-)
-
-if exist "bin\ScanSymb.dll" (
-    echo ✅ ScanSymb.dll успешно создан
-) else (
-    echo ❌ ScanSymb.dll не найден
 )
 
 echo.
