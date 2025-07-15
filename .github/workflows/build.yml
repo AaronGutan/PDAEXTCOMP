@@ -37,9 +37,9 @@ jobs:
                 # Try curl (more reliable for large files)
                 if (Get-Command curl -ErrorAction SilentlyContinue) {
                     Write-Host "Using curl for download..."
-                    & curl -L -o $output $url --retry 3 --retry-delay 5 --max-time 300
+                    & curl.exe --location --output $output $url --retry 3 --retry-delay 5 --max-time 300
                     if ($LASTEXITCODE -eq 0) {
-                        Write-Host "Загрузка через curl успешна"
+                        Write-Host "Curl download successful"
                         break
                     }
                 }
@@ -48,7 +48,7 @@ jobs:
                 Write-Host "Using Invoke-WebRequest..."
                 $webClient = New-Object System.Net.WebClient
                 $webClient.DownloadFile($url, $output)
-                Write-Host "Загрузка через WebClient успешна"
+                Write-Host "WebClient download successful"
                 break
                 
             } catch {
@@ -58,9 +58,9 @@ jobs:
                     # Use alternative URL from GitHub releases
                     $altUrl = "https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x86.tgz"
                     try {
-                        & curl -L -o $output $altUrl --retry 3 --retry-delay 5 --max-time 300
+                        & curl.exe --location --output $output $altUrl --retry 3 --retry-delay 5 --max-time 300
                         if ($LASTEXITCODE -eq 0) {
-                            Write-Host "Загрузка из альтернативного источника успешна"
+                            Write-Host "Alternative source download successful"
                             break
                         }
                     } catch {
@@ -123,10 +123,10 @@ jobs:
         
         # Check result
         if (Test-Path "PdfImageAddIn.dll") {
-          Write-Host "PdfImageAddIn.dll успешно создан"
+          Write-Host "PdfImageAddIn.dll created successfully"
           Get-Item "PdfImageAddIn.dll" | Select-Object Name, Length, LastWriteTime
         } else {
-          Write-Host "Ошибка создания PdfImageAddIn.dll"
+          Write-Host "Error creating PdfImageAddIn.dll"
           exit 1
         }
       shell: powershell
@@ -142,7 +142,7 @@ jobs:
         link /DLL /OUT:LogAddIn.dll /DEF:ADDIN.DEF LogAddIn.obj MyClassFactory.obj ../../lib/addin.lib ole32.lib oleaut32.lib uuid.lib
         
         if (Test-Path "LogAddIn.dll") {
-          Write-Host "LogAddIn.dll успешно создан"
+          Write-Host "LogAddIn.dll created successfully"
         }
       shell: powershell
     
@@ -157,7 +157,7 @@ jobs:
         link /DLL /OUT:ScanSymb.dll /DEF:ScanSymb.DEF ScanAddIn.obj MyClassFactory.obj ScanWindow.obj ../../lib/addin.lib ole32.lib oleaut32.lib uuid.lib user32.lib
         
         if (Test-Path "ScanSymb.dll") {
-          Write-Host "ScanSymb.dll успешно создан"
+          Write-Host "ScanSymb.dll created successfully"
         }
       shell: powershell
     
