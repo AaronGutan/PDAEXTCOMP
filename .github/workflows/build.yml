@@ -25,7 +25,7 @@ jobs:
     - name: Download PDFium
       run: |
         # Скачиваем предсобранные PDFium библиотеки с retry логикой
-        $url = "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F5790/pdfium-win-x86.tgz"
+        $url = "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F7295/pdfium-win-x86.tgz"
         $output = "pdfium-win-x86.tgz"
         $maxAttempts = 3
         $attempt = 1
@@ -73,10 +73,18 @@ jobs:
             }
         }
         
-        # Check that file was downloaded
+        # Check that file was downloaded and is not empty
         if (!(Test-Path $output)) {
             throw "PDFium file was not downloaded"
         }
+        
+        $fileSize = (Get-Item $output).Length
+        if ($fileSize -lt 1000000) {  # Less than 1MB probably means error page
+            Write-Host "Downloaded file size: $fileSize bytes"
+            throw "PDFium file is too small - probably an error page"
+        }
+        
+        Write-Host "PDFium file downloaded successfully, size: $fileSize bytes"
         
         Write-Host "Extracting PDFium..."
         tar -xzf $output
