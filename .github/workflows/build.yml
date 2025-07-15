@@ -222,6 +222,15 @@ jobs:
           Write-Host "Error: PdfImageAddIn.dll not found!"
           exit 1
         }
+        
+        # Copy PDFium DLL
+        if (Test-Path "bin/pdfium.dll") {
+          Copy-Item -Path "bin/pdfium.dll" -Destination "artifacts/"
+          Write-Host "pdfium.dll copied to artifacts"
+        } else {
+          Write-Host "Error: pdfium.dll not found!"
+          exit 1
+        }
                   
           # Copy documentation
           Copy-Item -Path "*.htm" -Destination "artifacts/" -Force
