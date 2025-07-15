@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "PdfImageAddIn.h"
+#include "PdfDragDropWindow.h"
 #include "Addin/Log.h"
 #include "resource.h"
 #include <stdio.h>
@@ -35,6 +36,10 @@ DPdfImageAddIn::DPdfImageAddIn()
     m_bPdfLoaded = FALSE;
     m_boolEnabled = TRUE;
     
+    // Инициализация drag-n-drop
+    m_pDragDropWindow = NULL;
+    m_bDragDropEnabled = TRUE;
+    
     // Инициализация PDFium
     InitializePdfium();
 }
@@ -49,6 +54,12 @@ DPdfImageAddIn::~DPdfImageAddIn()
     
     // Очистка списка изображений
     m_ImageList.clear();
+    
+    // Закрытие drag-n-drop окна
+    if (m_pDragDropWindow) {
+        delete m_pDragDropWindow;
+        m_pDragDropWindow = NULL;
+    }
     
     // Завершение работы с PDFium
     FinalizePdfium();
@@ -294,6 +305,15 @@ HRESULT DPdfImageAddIn::GetNParams(long lMethodNum, long *plParams)
         case methGetPageCount:
             *plParams = 0;
             break;
+        case methOpenDragDropEditor:
+            *plParams = 0;
+            break;
+        case methCloseDragDropEditor:
+            *plParams = 0;
+            break;
+        case methShowDragDropHelp:
+            *plParams = 0;
+            break;
         default:
             return S_FALSE;
     }
@@ -336,6 +356,13 @@ HRESULT DPdfImageAddIn::HasRetVal(long lMethodNum, BOOL *pboolRetValue)
         case methGetPageCount:
             *pboolRetValue = TRUE;  // Возвращают значения
             break;
+        case methOpenDragDropEditor:
+        case methCloseDragDropEditor:
+            *pboolRetValue = TRUE;  // Возвращают результат операции
+            break;
+        case methShowDragDropHelp:
+            *pboolRetValue = FALSE;  // Не возвращают значения
+            break;
         default:
             return S_FALSE;
     }
@@ -345,8 +372,14 @@ HRESULT DPdfImageAddIn::HasRetVal(long lMethodNum, BOOL *pboolRetValue)
 
 HRESULT DPdfImageAddIn::CallAsProc(long lMethodNum, SAFEARRAY **paParams)
 {
-    // Все методы возвращают значения, поэтому здесь пусто
-    return S_FALSE;
+    switch(lMethodNum)
+    {
+        case methShowDragDropHelp:
+            ShowDragDropHelp();
+            return S_OK;
+        default:
+            return S_FALSE;
+    }
 }
 
 HRESULT DPdfImageAddIn::CallAsFunc(long lMethodNum, VARIANT *pvarRetValue, SAFEARRAY **paParams)
@@ -466,6 +499,22 @@ HRESULT DPdfImageAddIn::CallAsFunc(long lMethodNum, VARIANT *pvarRetValue, SAFEA
             long pageCount = GetTotalPageCount();
             V_VT(pvarRetValue) = VT_I4;
             V_I4(pvarRetValue) = pageCount;
+            break;
+        }
+        
+        case methOpenDragDropEditor:
+        {
+            BOOL result = OpenDragDropEditor();
+            V_VT(pvarRetValue) = VT_BOOL;
+            V_BOOL(pvarRetValue) = result ? VARIANT_TRUE : VARIANT_FALSE;
+            break;
+        }
+        
+        case methCloseDragDropEditor:
+        {
+            BOOL result = CloseDragDropEditor();
+            V_VT(pvarRetValue) = VT_BOOL;
+            V_BOOL(pvarRetValue) = result ? VARIANT_TRUE : VARIANT_FALSE;
             break;
         }
         
@@ -1020,4 +1069,78 @@ void DPdfImageAddIn::SetLastError(const _TCHAR* error)
 void DPdfImageAddIn::ClearLastError()
 {
     _tcscpy(m_LastError, _T(""));
+}
+
+// Методы для работы с drag-n-drop
+BOOL DPdfImageAddIn::OpenDragDropEditor()
+{
+    ClearLastError();
+    
+    // Проверяем, что окно еще не открыто
+    if (m_pDragDropWindow != NULL) {
+        SetLastError(_T("Drag & Drop редактор уже открыт"));
+        return FALSE;
+    }
+    
+    // Создаем новое окно
+    m_pDragDropWindow = new PdfDragDropWindow(this);
+    if (!m_pDragDropWindow) {
+        SetLastError(_T("Не удалось создать объект drag-n-drop окна"));
+        return FALSE;
+    }
+    
+    // Создаем окно
+    if (!m_pDragDropWindow->Create()) {
+        delete m_pDragDropWindow;
+        m_pDragDropWindow = NULL;
+        SetLastError(_T("Не удалось создать drag-n-drop окно"));
+        return FALSE;
+    }
+    
+    // Если PDF уже загружен, загружаем его в окно
+    if (m_bPdfLoaded && _tcslen(m_PdfFileName) > 0) {
+        m_pDragDropWindow->LoadPdf(m_PdfFileName);
+    }
+    
+    // Показываем окно
+    m_pDragDropWindow->Show(TRUE);
+    
+    LOG(Log(_T("PdfImageAddIn: Drag & Drop editor opened")));
+    return TRUE;
+}
+
+BOOL DPdfImageAddIn::CloseDragDropEditor()
+{
+    ClearLastError();
+    
+    if (m_pDragDropWindow == NULL) {
+        SetLastError(_T("Drag & Drop редактор не открыт"));
+        return FALSE;
+    }
+    
+    // Закрываем окно
+    m_pDragDropWindow->Close();
+    
+    // Удаляем объект
+    delete m_pDragDropWindow;
+    m_pDragDropWindow = NULL;
+    
+    LOG(Log(_T("PdfImageAddIn: Drag & Drop editor closed")));
+    return TRUE;
+}
+
+void DPdfImageAddIn::ShowDragDropHelp()
+{
+    // Показываем справку
+    HWND hParent = NULL;
+    if (m_pDragDropWindow) {
+        hParent = m_pDragDropWindow->GetHWnd();
+    }
+    
+    ::ShowDragDropHelp(hParent);
+}
+
+BOOL DPdfImageAddIn::IsDragDropEditorOpen() const
+{
+    return (m_pDragDropWindow != NULL && m_pDragDropWindow->IsWindowValid());
 } 

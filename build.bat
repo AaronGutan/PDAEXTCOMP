@@ -23,16 +23,16 @@ if not exist "bin" mkdir bin
 
 :: Скачивание PDFium (если нужно)
 if not exist "include\fpdfview.h" (
-    echo Скачивание PDFium...
-    powershell -Command "& {Invoke-WebRequest -Uri 'https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%%2F5790/pdfium-win-x86.tgz' -OutFile 'pdfium-win-x86.tgz'}"
+    echo Скачивание PDFium с retry логикой...
+    powershell -Command "& { $url = 'https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%%2F5790/pdfium-win-x86.tgz'; $output = 'pdfium-win-x86.tgz'; $maxAttempts = 3; $attempt = 1; while ($attempt -le $maxAttempts) { try { Write-Host \"Попытка $attempt из $maxAttempts...\"; if (Get-Command curl -ErrorAction SilentlyContinue) { Write-Host \"Используем curl...\"; & curl -L -o $output $url --retry 3 --retry-delay 5 --max-time 300; if ($LASTEXITCODE -eq 0) { Write-Host \"Загрузка через curl успешна\"; break } }; Write-Host \"Используем WebClient...\"; $webClient = New-Object System.Net.WebClient; $webClient.DownloadFile($url, $output); Write-Host \"Загрузка через WebClient успешна\"; break } catch { Write-Host \"Попытка $attempt не удалась: $($_.Exception.Message)\"; if ($attempt -eq $maxAttempts) { $altUrl = 'https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x86.tgz'; try { & curl -L -o $output $altUrl --retry 3 --retry-delay 5 --max-time 300; if ($LASTEXITCODE -eq 0) { Write-Host \"Загрузка из альтернативного источника успешна\"; break } } catch { throw \"Не удалось загрузить PDFium библиотеки\" } }; $attempt++; Start-Sleep -Seconds 5 } } }"
     
     echo Распаковка PDFium...
     tar -xzf pdfium-win-x86.tgz
     
     if not exist "include" mkdir include
-    copy bin\*.dll lib\ >NUL 2>&1
-    copy lib\*.lib lib\ >NUL 2>&1
-    xcopy include\* include\ /E /I /Q >NUL 2>&1
+    if exist "bin" copy bin\*.dll lib\ >NUL 2>&1
+    if exist "lib" copy lib\*.lib lib\ >NUL 2>&1
+    if exist "include" xcopy include\* include\ /E /I /Q >NUL 2>&1
     
     echo PDFium установлен
 ) else (
@@ -70,14 +70,14 @@ echo Сборка PdfImageAddIn...
 echo ========================================
 
 cd Source\PdfImageAddIn
-cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I..\..\include /I..\Addin /I. PdfImageAddIn.cpp MyClassFactory.cpp
+cl /c /EHsc /DWIN32 /D_WINDOWS /D_USRDLL /D_WINDLL /I..\..\include /I..\Addin /I. PdfImageAddIn.cpp MyClassFactory.cpp PdfDragDropWindow.cpp
 if errorlevel 1 (
     echo Ошибка компиляции PdfImageAddIn!
     pause
     exit /b 1
 )
 
-link /DLL /OUT:..\..\bin\PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj ..\..\lib\addin.lib ..\..\lib\pdfium.lib ole32.lib oleaut32.lib uuid.lib
+link /DLL /OUT:..\..\bin\PdfImageAddIn.dll /DEF:PdfImageAddIn.def PdfImageAddIn.obj MyClassFactory.obj PdfDragDropWindow.obj ..\..\lib\addin.lib ..\..\lib\pdfium.lib ole32.lib oleaut32.lib uuid.lib
 if errorlevel 1 (
     echo Ошибка линковки PdfImageAddIn!
     pause

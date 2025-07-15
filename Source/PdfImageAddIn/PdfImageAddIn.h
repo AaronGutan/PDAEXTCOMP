@@ -15,6 +15,9 @@
 // Vector для хранения изображений
 #include <vector>
 
+// Forward declaration для drag-n-drop окна
+class PdfDragDropWindow;
+
 // Структура для хранения информации о добавленных изображениях
 struct PdfImageInfo {
     double x, y;
@@ -58,6 +61,9 @@ public:
         methGetPageSize,            // GetPageSize(pageNum, width, height);
         methClearImages,            // ClearImages();
         methGetPageCount,           // GetPageCount();
+        methOpenDragDropEditor,     // OpenDragDropEditor();
+        methCloseDragDropEditor,    // CloseDragDropEditor();
+        methShowDragDropHelp,       // ShowDragDropHelp();
         LastMethod      // Всегда последний
     };
 
@@ -91,6 +97,10 @@ private:
     BOOL m_bPdfLoaded;
     std::vector<PdfImageInfo> m_ImageList;
     
+    // Drag-n-drop окно
+    PdfDragDropWindow* m_pDragDropWindow;
+    BOOL m_bDragDropEnabled;
+    
     // Инициализация и завершение PDFium
     BOOL InitializePdfium();
     void FinalizePdfium();
@@ -119,6 +129,12 @@ private:
         HANDLE hFile;
         BOOL bSuccess;
     };
+    
+    // Методы для работы с drag-n-drop
+    BOOL OpenDragDropEditor();
+    BOOL CloseDragDropEditor();
+    void ShowDragDropHelp();
+    BOOL IsDragDropEditorOpen() const;
 };
 
 #endif // _PDFIMAGEADDIN_H 

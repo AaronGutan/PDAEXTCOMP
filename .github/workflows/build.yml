@@ -24,24 +24,81 @@ jobs:
     
     - name: Download PDFium
       run: |
-        # Скачиваем предсобранные PDFium библиотеки
+        # Скачиваем предсобранные PDFium библиотеки с retry логикой
         $url = "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F5790/pdfium-win-x86.tgz"
         $output = "pdfium-win-x86.tgz"
-        Invoke-WebRequest -Uri $url -OutFile $output
+        $maxAttempts = 3
+        $attempt = 1
         
-        # Распаковываем
+        while ($attempt -le $maxAttempts) {
+            try {
+                Write-Host "Попытка $attempt из $maxAttempts загрузки PDFium..."
+                
+                # Пробуем curl (более надежный для больших файлов)
+                if (Get-Command curl -ErrorAction SilentlyContinue) {
+                    Write-Host "Используем curl для загрузки..."
+                    & curl -L -o $output $url --retry 3 --retry-delay 5 --max-time 300
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-Host "✅ Загрузка через curl успешна"
+                        break
+                    }
+                }
+                
+                # Fallback на Invoke-WebRequest
+                Write-Host "Используем Invoke-WebRequest..."
+                $webClient = New-Object System.Net.WebClient
+                $webClient.DownloadFile($url, $output)
+                Write-Host "✅ Загрузка через WebClient успешна"
+                break
+                
+            } catch {
+                Write-Host "❌ Попытка $attempt не удалась: $($_.Exception.Message)"
+                if ($attempt -eq $maxAttempts) {
+                    Write-Host "🔄 Пробуем альтернативный источник..."
+                    # Используем альтернативный URL с GitHub releases
+                    $altUrl = "https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x86.tgz"
+                    try {
+                        & curl -L -o $output $altUrl --retry 3 --retry-delay 5 --max-time 300
+                        if ($LASTEXITCODE -eq 0) {
+                            Write-Host "✅ Загрузка из альтернативного источника успешна"
+                            break
+                        }
+                    } catch {
+                        Write-Host "❌ Все попытки загрузки не удались"
+                        throw "Не удалось загрузить PDFium библиотеки"
+                    }
+                }
+                $attempt++
+                Start-Sleep -Seconds 10
+            }
+        }
+        
+        # Проверяем что файл загружен
+        if (!(Test-Path $output)) {
+            throw "Файл PDFium не был загружен"
+        }
+        
+        Write-Host "📦 Распаковка PDFium..."
         tar -xzf $output
         
-        # Создаем директорию для библиотек
+        # Создаем директории для библиотек
         New-Item -ItemType Directory -Path "lib" -Force
         New-Item -ItemType Directory -Path "include" -Force
         
         # Копируем файлы
-        Copy-Item -Path "bin\*.dll" -Destination "lib\" -Force
-        Copy-Item -Path "lib\*.lib" -Destination "lib\" -Force
-        Copy-Item -Path "include\*" -Destination "include\" -Recurse -Force
+        Write-Host "📂 Копирование файлов..."
+        if (Test-Path "bin") {
+            Copy-Item -Path "bin\*.dll" -Destination "lib\" -Force
+        }
+        if (Test-Path "lib") {
+            Copy-Item -Path "lib\*.lib" -Destination "lib\" -Force
+        }
+        if (Test-Path "include") {
+            Copy-Item -Path "include\*" -Destination "include\" -Recurse -Force
+        }
         
         # Показываем структуру
+        Write-Host "📋 Результат установки PDFium:"
         Get-ChildItem -Path "lib" -Recurse
         Get-ChildItem -Path "include" -Recurse
       shell: powershell
