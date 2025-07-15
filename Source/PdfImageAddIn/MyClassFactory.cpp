@@ -4,8 +4,8 @@
 #include "myclassfactory.h"
 #include "PdfImageAddIn.h"
 
-// GUID для компоненты (сгенерированный случайным образом)
-const CLSID CLSID_PdfImageAddIn = {0x12345678,0x9ABC,0xDEF0,{0x12,0x34,0x56,0x78,0x9A,0xBC,0xDE,0xF0}};
+// GUID для компоненты (уникальный идентификатор)
+const CLSID CLSID_PdfImageAddIn = {0x5CFC0429,0xC04D,0x4B47,{0x98,0x52,0xB6,0xC3,0xBA,0xF4,0xB7,0xF9}};
 
 MyClassFactory::MyClassFactory()
   : DClassFactory(CLSID_PdfImageAddIn)
