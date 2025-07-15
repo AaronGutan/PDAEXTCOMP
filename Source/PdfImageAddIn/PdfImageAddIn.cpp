@@ -3,7 +3,7 @@
 
 #include "PdfImageAddIn.h"
 #include "PdfDragDropWindow.h"
-#include "Addin/Log.h"
+#include "../Addin/Log.h"
 #include "resource.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -2,7 +2,7 @@
 #define _PDFIMAGEADDIN_H
 
 #ifndef _ADDIN_ADDIN_H
-#include "Addin/Addin.h"
+#include "../Addin/Addin.h"
 #endif
 
 // PDFium headers

@@ -1,7 +1,7 @@
 #ifndef _MYCLASSFACTORY_H
 #define _MYCLASSFACTORY_H
 
-#include "Addin/ClassFactory.h"
+#include "../Addin/ClassFactory.h"
 
 class MyClassFactory : public DClassFactory
 {
