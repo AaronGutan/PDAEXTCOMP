@@ -2,7 +2,7 @@
 #define _ADDIN_ADDIN_H
 
 
-#include "addin/addintlb.h"
+#include "addintlb.h"
 
 struct Property
 {

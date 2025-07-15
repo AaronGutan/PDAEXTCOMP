@@ -2,7 +2,7 @@
 #pragma hdrstop
 #include <windows.h>
 #include <stdio.h>
-#include "addin/log.h"
+#include "log.h"
 
 typedef unsigned char uchar;
 bool bLogEnabled = false;
