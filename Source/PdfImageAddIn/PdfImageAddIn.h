@@ -105,11 +105,12 @@ private:
     BOOL InitializePdfium();
     void FinalizePdfium();
     
-    // Внутренние методы
+public:
+    // Методы для работы с PDF
     BOOL LoadPdfFile(const TCHAR* filename);
     BOOL AddImageToPdf(const TCHAR* imageFile, double x, double y, double width, double height, long pageNum);
     BOOL SavePdfFile(const TCHAR* filename);
-public:
+    
     BOOL GetPageDimensions(long pageNum, double* width, double* height);
     BOOL ClearAllImages();
     long GetTotalPageCount();

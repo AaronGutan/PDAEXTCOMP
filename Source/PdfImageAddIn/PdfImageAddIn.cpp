@@ -993,7 +993,10 @@ BOOL DPdfImageAddIn::AddImageToPage(FPDF_PAGE page, const void* imageData, size_
     
     // Получение размеров страницы для корректного позиционирования
     double pageWidth, pageHeight;
-    if (!FPDF_GetPageSizeByIndex(m_pPdfDocument, pageNum - 1, &pageWidth, &pageHeight)) {
+    pageWidth = FPDF_GetPageWidth(page);
+    pageHeight = FPDF_GetPageHeight(page);
+    
+    if (pageWidth <= 0 || pageHeight <= 0) {
         FPDFPageObj_Destroy(imageObj);
         SetLastError(_T("Не удалось получить размеры страницы"));
         return FALSE;

@@ -213,12 +213,6 @@ LRESULT PdfDragDropWindow::HandleMessage(UINT message, WPARAM wParam, LPARAM lPa
     case WM_DROPFILES:
         return OnDropFiles(wParam);
         
-            case WM_DROPFILES:
-            return OnDropFiles(wParam);
-        
-        case WM_MOUSEMOVE:
-            return OnMouseMove(wParam, lParam);
-        
     case WM_MOUSEMOVE:
         return OnMouseMove(wParam, lParam);
         

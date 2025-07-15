@@ -1,7 +1,7 @@
 #ifndef _ADDIN_ADDIN_H
 #define _ADDIN_ADDIN_H
 
-
+#include <tchar.h>
 #include "addintlb.h"
 
 struct Property
