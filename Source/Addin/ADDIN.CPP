@@ -387,6 +387,7 @@ HRESULT  DAddIn::GetInfo(SAFEARRAY **pInfo)
 
 HRESULT  DAddIn::RegisterExtensionAs(BSTR *bstrExtensionName)
 {
+    USES_CONVERSION;
 
     // You may delete next lines and add your own implementation code here
 
