@@ -1,0 +1,9 @@
+; PdfImageAddIn_Simple.def : Declares the module parameters.
+
+LIBRARY      "PdfImageAddIn_Simple.dll"
+
+EXPORTS
+	DllCanUnloadNow     PRIVATE
+	DllGetClassObject   PRIVATE
+	DllRegisterServer   PRIVATE
+	DllUnregisterServer	PRIVATE 
