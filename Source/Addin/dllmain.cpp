@@ -143,7 +143,14 @@ STDAPI DllRegisterServer()
   _TCHAR objName[300];
   _tcscpy(objName, _T("Addin."));
   _TCHAR strbuff[200];
-  ::LoadString(g_hinst, 100, strbuff, 200);
+  
+  // Пытаемся загрузить имя из ресурсов
+  int result = ::LoadString(g_hinst, 100, strbuff, 200);
+  if (result == 0 || _tcslen(strbuff) == 0) {
+    // Если не удалось загрузить, используем fallback
+    _tcscpy(strbuff, _T("PdfImageAddIn"));
+    LOG(Log(_T("LoadString failed, using fallback: %s"), strbuff));
+  }
   _tcscat(objName, strbuff);
 
   _TCHAR objName1[300];
